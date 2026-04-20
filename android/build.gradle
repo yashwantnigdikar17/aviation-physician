@@ -1,0 +1,56 @@
+buildscript {
+    ext {
+        buildToolsVersion = "35.0.0"
+        minSdkVersion = 24
+        compileSdkVersion = 34
+        targetSdkVersion = 34
+        ndkVersion = "27.1.12297006"
+        kotlinVersion = "1.8.22"
+        gradlePluginVersion = "8.2.1"
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        ////////////////////////////////////////////////////////
+        // ✅ REQUIRED
+        ////////////////////////////////////////////////////////
+        classpath("com.android.tools.build:gradle:8.2.1")
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.22")
+        classpath("com.google.gms:google-services:4.3.15")
+    }
+}
+
+////////////////////////////////////////////////////////
+// ✅ REQUIRED FOR RN
+////////////////////////////////////////////////////////
+apply plugin: "com.facebook.react.rootproject"
+
+////////////////////////////////////////////////////////
+// ✅ REPOSITORIES
+////////////////////////////////////////////////////////
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+////////////////////////////////////////////////////////
+// 🔥 GLOBAL FIX (AMPLITUDE + ALL LIBS)
+////////////////////////////////////////////////////////
+subprojects { subproject ->
+    if (subproject.plugins.hasPlugin("com.android.application") ||
+        subproject.plugins.hasPlugin("com.android.library")) {
+
+        subproject.android {
+            buildFeatures {
+                buildConfig true
+            }
+        }
+    }
+}   

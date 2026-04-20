@@ -1,0 +1,6 @@
+module Pods_TiaAviation {
+  umbrella header "Pods-TiaAviation-umbrella.h"
+
+  export *
+  module * { export * }
+}
