@@ -1,1 +1,0 @@
-../../../../../node_modules/react-native-splash-view/ios/generated/RNSplashViewSpec/RNSplashViewSpec.h

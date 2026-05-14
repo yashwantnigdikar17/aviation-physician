@@ -1,1 +1,0 @@
-../../../../../build/generated/ios/GiphyReactNativeSDKSpec/GiphyReactNativeSDKSpec.h

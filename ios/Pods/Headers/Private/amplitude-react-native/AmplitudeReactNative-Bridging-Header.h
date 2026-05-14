@@ -1,1 +1,0 @@
-../../../../../node_modules/@amplitude/analytics-react-native/ios/AmplitudeReactNative-Bridging-Header.h
