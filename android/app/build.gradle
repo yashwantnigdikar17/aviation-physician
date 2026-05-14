@@ -69,6 +69,7 @@ android {
 
 dependencies {
     implementation("com.facebook.react:react-android")
+    implementation('io.github.jeremyliao:live-event-bus-x:1.8.0')
 
     ////////////////////////////////////////////////////////
     // ✅ JITSI STABILITY FIX

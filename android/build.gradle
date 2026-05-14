@@ -37,6 +37,9 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+
+        // 🔥 ADD THIS (ensures all libs resolve properly)
+        maven { url "https://jitpack.io" }
     }
 }
 
@@ -53,4 +56,4 @@ subprojects { subproject ->
             }
         }
     }
-}   
+}

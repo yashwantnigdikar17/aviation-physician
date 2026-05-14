@@ -1,150 +1,399 @@
-import React from 'react';
+// components/RightVitalsPanel.js
+import React from "react";
 import {
-  View, Text, TouchableOpacity, StyleSheet, ScrollView,
-} from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 
+// SVG IMPORTS
+import Heart from "../assets/Images/Heart.svg";
+import BloodPressure from "../assets/Images/BloodPressure.svg";
+import Oxygen from "../assets/Images/Oxygen.svg";
+import RespiratoryRate from "../assets/Images/RespiratoryRate.svg";
+import Temperature from "../assets/Images/Temperature.svg";
+import Eye from "../assets/Images/eyeicon.svg";
+import Sweating from "../assets/Images/Sweating.svg";
+import ECG from "../assets/Images/ECG.svg";
+import Pain from "../assets/Images/Pain.svg";
+import Glucose from "../assets/Images/Glucose.svg";
+import AVPU from "../assets/Images/AVPU.svg";
+import Trend from "../assets/Images/Trend.svg";
+import Greycolorpicker from "../assets/Images/greycolorpicker.svg";
+import ECGGraph from "../assets/Images/ECGGraph.svg";
+import ECGGraphDark from "../assets/Images/ECGGraphDark.svg";
+import { useTheme } from "../theme/ThemeContext";
+// ─────────────────────────────────────────────
+// VITALS
+// ─────────────────────────────────────────────
 const VITALS = [
-  { label: 'Heart Rate',       value: '88',     unit: 'bpm',   warn: false, warningType: null,  showGraph: false, icon: 'favorite-border',                     lib: 'MI'  },
-  { label: 'Blood Pressure',   value: '135/85', unit: 'mmHg',  warn: true,  warningType: 'red', showGraph: false, icon: 'radiobox-marked',                     lib: 'MCI' },
-  { label: 'Oxygen',           value: '95',     unit: '%',     warn: false, warningType: null,  showGraph: false, icon: 'air',                                 lib: 'MI'  },
-  { label: 'Respiratory Rate', value: '20',     unit: '/min',  warn: false, warningType: null,  showGraph: false, icon: 'arrow-top-right-thin-circle-outline', lib: 'MCI' },
-  { label: 'Temperature',      value: '36.8',   unit: '°C',    warn: false, warningType: null,  showGraph: false, icon: 'thermostat',                          lib: 'MI'  },
-  { label: 'Skin Color',       value: 'Normal', unit: '',      warn: false, warningType: null,  showGraph: false, icon: 'palette',                             lib: 'MI'  },
-  { label: 'Sweating',         value: 'Mild',   unit: '',      warn: false, warningType: null,  showGraph: false, icon: 'water-drop',                          lib: 'MI'  },
-  { label: 'ECG',              value: 'Sinus',  unit: '',      warn: false, warningType: null,  showGraph: true,  icon: 'show-chart',                          lib: 'MI'  },
-  { label: 'Pain Score',       value: '6/10',   unit: '',      warn: true,  warningType: 'red', showGraph: false, icon: 'sentiment-very-dissatisfied',         lib: 'MI'  },
+  {
+    label: "Heart Rate",
+    value: "88",
+    unit: "bpm",
+    warn: false,
+    warningType: null,
+    showGraph: false,
+    icon: Heart,
+  },
+  {
+    label: "Blood Pressure",
+    value: "135/85",
+    unit: "mmHg",
+    warn: true,
+    warningType: "red",
+    showGraph: false,
+    icon: BloodPressure,
+  },
+  {
+    label: "Oxygen",
+    value: "95",
+    unit: "%",
+    warn: false,
+    warningType: null,
+    showGraph: false,
+    icon: Oxygen,
+  },
+  {
+    label: "Respiratory Rate",
+    value: "20",
+    unit: "/min",
+    warn: false,
+    warningType: null,
+    showGraph: false,
+    icon: RespiratoryRate,
+  },
+  {
+    label: "Temperature",
+    value: "36.8",
+    unit: "°C",
+    warn: false,
+    warningType: null,
+    showGraph: false,
+    icon: Temperature,
+  },
+  {
+    label: "Skin Color",
+    value: "Normal",
+    unit: "",
+    warn: false,
+    warningType: null,
+    showGraph: false,
+    icon: Greycolorpicker,
+  },
+  {
+    label: "Sweating",
+    value: "Mild",
+    unit: "",
+    warn: false,
+    warningType: null,
+    showGraph: false,
+    icon: Sweating,
+  },
+  {
+    label: "ECG",
+    value: "Sinus",
+    unit: "",
+    warn: false,
+    warningType: null,
+    showGraph: true,
+    icon: null,
+  },
+  {
+    label: "Pain Score",
+    value: "6/10",
+    unit: "",
+    warn: true,
+    warningType: "red",
+    showGraph: false,
+    icon: Pain,
+  },
+  {
+    label: "Blood Glucose",
+    value: "100",
+    unit: "mg/dl",
+    warn: false,
+    warningType: null,
+    showGraph: false,
+    icon: Glucose,
+  },
+  {
+    label: "AVPU Score",
+    value: "15",
+    unit: "",
+    warn: false,
+    warningType: null,
+    showGraph: false,
+    icon: AVPU,
+  },
 ];
 
-const EcgLine = () => (
-  <View style={ecgStyles.wrapper}>
-    <View style={ecgStyles.baseline} />
-    <View style={[ecgStyles.spike, { left: '20%', height: 6  }]} />
-    <View style={[ecgStyles.spike, { left: '40%', height: 20 }]} />
-    <View style={[ecgStyles.spike, { left: '55%', height: 7  }]} />
-    <View style={[ecgStyles.spike, { left: '70%', height: 5  }]} />
-  </View>
-);
 
-const ecgStyles = StyleSheet.create({
-  wrapper: {
-    width: 40, height: 22,
-    justifyContent: 'center',
-    overflow: 'hidden',
-  },
-  baseline: {
-    position: 'absolute',
-    left: 0, right: 0, top: 10,
-    height: 1.5,
-    backgroundColor: '#E81314',
-  },
-  spike: {
-    position: 'absolute',
-    width: 1.5,
-    backgroundColor: '#E81314',
-    bottom: 2,
-  },
-});
 
-const VitalCard = ({ label, value, unit, warn, warningType, showGraph, icon, lib }) => {
-  const isRed    = warn && warningType === 'red';
-  const isOrange = warn && warningType === 'orange';
-  const iconColor = isRed ? '#E81314' : isOrange ? '#FC9432' : '#C5D3E0';
+// ─────────────────────────────────────────────
+// VITAL CARD
+// ─────────────────────────────────────────────
+const VitalCard = ({
+  label,
+  value,
+  unit,
+  showGraph,
+  icon: Icon,
+  // theme,
+}) => {
+  const ALERT_RED = "#E81314";
+  const ALERT_ORANGE = "#FC9432";
+  const ALERT_BLUE = "#2563EB";
+const { theme, dark } = useTheme();
+  // 🎯 BORDER COLOR
+  let borderColor = theme?.rvCardBorderDefault ?? "#E6E6E6";
+  let shadeBg = "transparent";
+
+  if (label === "Oxygen") {
+    borderColor = ALERT_RED;
+    shadeBg = theme?.rvShadeOxygen;
+  } else if (label === "Respiratory Rate" || label === "Temperature") {
+    borderColor = ALERT_ORANGE;
+    shadeBg = theme?.rvShadeOrange;
+  } else if (label === "AVPU Score") {
+    borderColor = ALERT_BLUE;
+  }
+
+  const iconColor =
+    borderColor === ALERT_RED
+      ? ALERT_RED
+      : borderColor === ALERT_ORANGE
+      ? ALERT_ORANGE
+      : borderColor === ALERT_BLUE
+      ? ALERT_BLUE
+      : theme?.rvTrendsBtnIcon ?? "#C5D3E0";
 
   return (
-    <View style={[
-      styles.card,
-      isRed    && styles.cardRed,
-      isOrange && styles.cardOrange,
-    ]}>
-      <View style={[
-        styles.accentBar,
-        isRed    && styles.accentRed,
-        isOrange && styles.accentOrange,
-      ]} />
+    <View
+      style={[
+        styles.card,
+        {
+          borderLeftColor: borderColor,
+          backgroundColor: theme?.rvCardBg,
+        },
+      ]}
+    >
+      {/* 🔥 SHADE OVERLAY */}
+      {(label === "Oxygen" ||
+        label === "Respiratory Rate" ||
+        label === "Temperature") && (
+        <View
+          style={[
+            styles.shadeOverlay,
+            { backgroundColor: shadeBg },
+          ]}
+        />
+      )}
+
       <View style={styles.cardContent}>
-        <Text style={styles.cardLabel}>{label}</Text>
-        <Text style={[styles.cardValue, isRed && styles.textRed, isOrange && styles.textOrange]}>
+        <Text
+          style={[
+            styles.cardLabel,
+            { color: theme?.rvCardLabel },
+          ]}
+        >
+          {label}
+        </Text>
+
+        <Text
+          style={[
+            styles.cardValue,
+            { color: theme?.rvCardValue },
+          ]}
+        >
           {value}
-          {unit ? <Text style={styles.cardUnit}> {unit}</Text> : null}
+          {unit ? (
+            <Text
+              style={[
+                styles.cardUnit,
+                { color: theme?.rvCardUnit },
+              ]}
+            >
+              {" "}
+              {unit}
+            </Text>
+          ) : null}
         </Text>
       </View>
-      {showGraph
-        ? <EcgLine />
-        : lib === 'MCI'
-          ? <MaterialCommunityIcons name={icon} size={14} color={iconColor} />
-          : <MaterialIcons name={icon} size={14} color={iconColor} />
-      }
+
+   {showGraph ? (
+  dark? (
+    <ECGGraphDark width={70} height={40} />
+  ) : (
+    <ECGGraph width={70} height={40} />
+  )
+) : (
+  <Icon width={16} height={16} fill={iconColor} />
+)}
     </View>
   );
 };
 
-// Panel renders ONLY its inner content.
-// Outer wrapper with exact width/padding is applied in CaseDetailScreen.
-const RightVitalsPanel = ({ onShowTrends }) => (
+// ─────────────────────────────────────────────
+// PANEL
+// ─────────────────────────────────────────────
+const RightVitalsPanel = ({
+  onShowTrends,
+  onECGPress,
+  showTrendsButton = true,
+  showHeader = false,
+  patientInfo = {},
+  onClose,
+  theme,          // ← receive theme from parent
+}) => (
   <View style={styles.inner}>
-    {/* Show Vital Trends button */}
-    <TouchableOpacity style={styles.showTrendsBtn} onPress={onShowTrends} activeOpacity={0.8}>
-      <MaterialIcons name="bar-chart" size={13} color="#1565C0" />
-      <Text style={styles.showTrendsText}>Show Vital trends</Text>
-    </TouchableOpacity>
+    {/* CONDITIONAL HEADER */}
+    {showHeader && (
+      <View style={styles.header}>
+        <View style={{ flex: 1 }}>
+          <Text style={[styles.headerTitle, { color: theme.rvHeaderTitle }]}>
+            {patientInfo.name}, {patientInfo.age} {patientInfo.gender}
+          </Text>
+          <Text style={[styles.headerSub, { color: theme.rvHeaderSub  }]}>
+            Flight {patientInfo.flight} ({patientInfo.route})
+          </Text>
+        </View>
 
-    {/* Vitals list — gap: 12 between cards as per spec */}
+        <TouchableOpacity onPress={onClose}>
+          <Text style={[styles.closeBtn, { color: theme.rvHeaderClose  }]}>
+            ✕
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )}
+
+    {/* Show Trends */}
+    {showTrendsButton && (
+      <TouchableOpacity
+        style={[
+          styles.showTrendsBtn,
+          {
+            backgroundColor: theme.rvTrendsBtnBg ,
+            borderColor: theme.rvTrendsBtnBorder ,
+          },
+        ]}
+        onPress={onShowTrends}
+        activeOpacity={0.8}
+      >
+        <Trend width={18} height={18} fill={theme.rvTrendsBtnIcon } />
+        <Text style={[styles.showTrendsText, { color: theme.rvTrendsBtnText  }]}>
+          Show Vital trends
+        </Text>
+      </TouchableOpacity>
+    )}
+
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ gap: 12 }}
     >
-      {VITALS.map((v, i) => <VitalCard key={i} {...v} />)}
+      {VITALS.map((v, i) => {
+        if (v.label === "ECG") {
+          return (
+            <TouchableOpacity key={i} activeOpacity={0.8} >
+              <VitalCard {...v} theme={theme} />
+            </TouchableOpacity>
+          );
+        }
+        return <VitalCard key={i} {...v} theme={theme}  />;
+      })}
     </ScrollView>
   </View>
 );
 
 export default RightVitalsPanel;
 
+// ─────────────────────────────────────────────
+// STYLES  (only layout / non-theme values here)
+// ─────────────────────────────────────────────
 const styles = StyleSheet.create({
-  // Inner content only — no width/padding here, controlled by wrapper in screen
   inner: {
     flex: 1,
-    gap: 12,
+    gap: 0,
+    marginTop: 25,
   },
+
+  shadeOverlay: {
+  ...StyleSheet.absoluteFillObject,
+  borderRadius: 10,
+},
+
+  // HEADER
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 2,
+  },
+
+  headerTitle: {
+    fontSize: 13,
+    fontWeight: "700",
+  },
+
+  headerSub: {
+    fontSize: 10,
+    marginBottom: 15,
+  },
+
+  closeBtn: {
+    fontSize: 13,
+    padding: 4,
+  },
+
   showTrendsBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    backgroundColor: '#EBF2FF',
-    borderRadius: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    borderRadius: 10,
     paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingVertical: 15,
     borderWidth: 1,
-    borderColor: '#BBDEFB',
+    marginBottom: 10,
+    marginTop:-10
   },
+
   showTrendsText: {
     fontSize: 10,
-    color: '#1565C0',
-    fontWeight: '700',
+    fontWeight: "700",
   },
+
   card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    overflow: 'hidden',
-    paddingRight: 8,
-    paddingVertical: 7,
-    borderWidth: 1,
-    borderColor: '#EEF0F4',
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 10,
+    overflow: "hidden",
+    paddingRight: 12,
+    paddingVertical: 2,
+    borderLeftWidth: 4,
+    width: "83%",
+    alignSelf: "center",
+    marginTop:6
   },
-  cardRed:      { backgroundColor: '#FFF2F2', borderColor: '#FFCDD2' },
-  cardOrange:   { backgroundColor: '#FFF5E6', borderColor: '#FFE0B2' },
-  accentBar:    { width: 4, alignSelf: 'stretch', backgroundColor: '#34C759' },
-  accentRed:    { backgroundColor: '#FC9432' },
-  accentOrange: { backgroundColor: '#FC9432' },
-  cardContent:  { flex: 1, paddingLeft: 8 },
-  cardLabel:    { fontSize: 9,  color: '#9DAFC4', marginBottom: 1 },
-  cardValue:    { fontSize: 12, fontWeight: '700', color: '#111' },
-  cardUnit:     { fontSize: 9,  fontWeight: '400', color: '#8899AA' },
-  textRed:      { color: '#E81314' },
-  textOrange:   { color: '#FC9432' },
+
+  curveStrip: {
+    // decorative — width intentionally 0; left border does the visual work
+    width: 0,
+  },
+
+  cardContent: { flex: 1, paddingLeft: 8 },
+
+  cardLabel: { fontSize: 9, marginBottom: 2 },
+
+  cardValue: {
+    fontSize: 12,
+    fontWeight: "500",
+  },
+
+  cardUnit: {
+    fontSize: 12,
+    fontWeight: "400",
+  },
 });

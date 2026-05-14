@@ -34,15 +34,20 @@ const onReadyToClose = useCallback(() => {
     <View style={styles.container}>
       <JitsiMeeting
         room={roomId || "test123"}
-        serverURL="https://meet.jit.si/"
+        serverURL="https://tiajitsistg.tiatech.net/"
         style={styles.meeting}
         config={{
           disableThirdPartyRequests: true,
           analytics: { disabled: true },
+          startWithVideoMuted: true,
+        startWithAudioMuted: false,
+
         }}
         flags={{
           'prejoinpage.enabled': false,
           'pip.enabled': false,
+             "camera-mute.enabled": true,
+        "microphone-mute.enabled": true,
         }}
         userInfo={{
           displayName: userName || 'User',
