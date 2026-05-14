@@ -1,0 +1,1 @@
+../../../../../node_modules/react-native-splash-view/ios/SplashView-Bridging-Header.h

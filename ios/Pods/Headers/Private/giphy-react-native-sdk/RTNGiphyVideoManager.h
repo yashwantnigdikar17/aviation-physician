@@ -1,0 +1,1 @@
+../../../../../node_modules/@giphy/react-native-sdk/ios/RTNGiphyVideoManager.h

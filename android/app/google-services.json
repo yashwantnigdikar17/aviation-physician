@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "37744650894",
+    "project_id": "reactnativetestapp-a0645",
+    "storage_bucket": "reactnativetestapp-a0645.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37744650894:android:93beca022db8ab1fdaf7df",
+        "android_client_info": {
+          "package_name": "com.doctorpatient.telemed"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX0vRkSQRJqMal9ftX-CyWdQEKPKnUPV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37744650894:android:3b99536c1b172b4edaf7df",
+        "android_client_info": {
+          "package_name": "com.reactnativetest.patient"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX0vRkSQRJqMal9ftX-CyWdQEKPKnUPV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37744650894:android:6c4952b0f15d0a7edaf7df",
+        "android_client_info": {
+          "package_name": "com.reactnativetestapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX0vRkSQRJqMal9ftX-CyWdQEKPKnUPV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
