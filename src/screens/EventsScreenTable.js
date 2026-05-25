@@ -1,6 +1,7 @@
 // screens/AllEventsScreen.js
 import React, { useState, useRef } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+// ADD THESE IMPORTS
 import {
   View,
   Text,
@@ -12,6 +13,8 @@ import {
   ScrollView,
   Modal,
   TouchableWithoutFeedback,
+  useWindowDimensions,
+  Platform,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import Sidebar from "../components/Sidebar";
@@ -485,6 +488,7 @@ const formatDateLabel = (dateString) => {
 
 export default function EventsScreenTable({ navigation }) {
   const insets = useSafeAreaInsets();
+  
   // const [isDark, setIsDark] = useState(false);
   // const theme = isDark ? darkTheme : lightTheme;
   const themeCtx = useTheme();
