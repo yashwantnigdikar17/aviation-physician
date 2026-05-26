@@ -1,5 +1,5 @@
 // screens/AllEventsScreen.js
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo  } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 // ADD THESE IMPORTS
 import {
@@ -56,16 +56,25 @@ const MENU_ITEMS = [
 
 // ─── COLUMN WIDTHS ───────────────────────────────────────────
 const C = {
-  checkbox: { width: 36 },
-  flight: { flex: 0.8 },
-  name: { flex: 1.1 },
-  mrn: { flex: 0.9 },
-  caseArrival: { flex: 0.9 },
-  status: { flex: 0.8 },
-  route: { flex: 1.1 },
-  physician: { flex: 1.0 },
-  crew: { flex: 0.9 },
-  actions: { flex: 1.9 },
+  checkbox: { width: 34 },
+
+  flight: { flex: 0.72 },
+
+  name: { flex: 1 },
+
+  mrn: { flex: 0.82 },
+
+  caseArrival: { flex: 0.82 },
+
+  status: { flex: 0.72 },
+
+  route: { flex: 0.95 },
+
+  physician: { flex: 0.92 },
+
+  crew: { flex: 0.82 },
+
+  actions: { flex: 1.45 },
 };
 const CASE_ARRIVAL_TIMES = [
   "08:15 AM",
@@ -379,7 +388,7 @@ const TableRow = ({
 
     <Text
       style={[s.dCell, C.flight, { color: theme.textPrimary }]}
-      numberOfLines={2}
+      numberOfLines={3}
     >
       {row.flight}
       {"\n"}
@@ -387,7 +396,7 @@ const TableRow = ({
     </Text>
 
     <TouchableOpacity style={C.name} activeOpacity={0.7} onPress={onNamePress}>
-      <Text style={[s.dCell, { color: theme.textPrimary }]} numberOfLines={2}>
+      <Text style={[s.dCell, { color: theme.textPrimary }]} numberOfLines={3}>
         {row.name}
         {"\n"}
         <Text style={[s.subTxt, { color: theme.textSecondary }]}>
@@ -398,7 +407,7 @@ const TableRow = ({
 
     <Text
       style={[s.dCell, C.mrn, { color: theme.textPrimary }]}
-      numberOfLines={1}
+      numberOfLines={2}
     >
       <Text style={[s.subTxt, { color: theme.textPrimary }]}>
         {"ID: " + row.patientId}
@@ -407,21 +416,21 @@ const TableRow = ({
 
     <Text
   style={[s.dCell, C.caseArrival, { color: theme.textPrimary }]}
-  numberOfLines={1}
+  numberOfLines={2}
 >
   {row.caseArrival}
 </Text>
 
     <Text
       style={[s.dCell, s.statusTxt, C.status, { color: theme.textPrimary }]}
-      numberOfLines={1}
+      numberOfLines={2}
     >
       {row.status}
     </Text>
 
     <Text
       style={[s.dCell, C.route, { color: theme.textPrimary }]}
-      numberOfLines={1}
+      numberOfLines={2}
     >
       {row.route}
     </Text>
@@ -488,7 +497,12 @@ const formatDateLabel = (dateString) => {
 
 export default function EventsScreenTable({ navigation }) {
   const insets = useSafeAreaInsets();
-  
+  const { width } = useWindowDimensions();
+
+const isTablet = width >= 768;
+const isSmallTablet = width < 1180;
+
+const tableScale = isSmallTablet ? 0.92 : 1;
   // const [isDark, setIsDark] = useState(false);
   // const theme = isDark ? darkTheme : lightTheme;
   const themeCtx = useTheme();
@@ -569,7 +583,14 @@ export default function EventsScreenTable({ navigation }) {
         <View style={{ flex: 1, flexDirection: "row" }}>
           <View style={[s.main, { backgroundColor: theme.mainBg }]}>
             {/* ── TOP STATS ── */}
-            <View style={s.top}>
+            <View
+  style={[
+    s.top,
+    {
+      flexWrap: isSmallTablet ? "wrap" : "nowrap",
+    },
+  ]}
+>
               <View style={[s.greet, { backgroundColor: theme.greetBg }]}>
                 <View
                   style={{
@@ -622,7 +643,15 @@ export default function EventsScreenTable({ navigation }) {
             </View>
 
             {/* ── SEARCH ROW ── */}
-            <View style={s.searchRow}>
+            <View
+  style={[
+    s.searchRow,
+    {
+      flexWrap: isSmallTablet ? "wrap" : "nowrap",
+      rowGap: 10,
+    },
+  ]}
+>
               {/* Date picker — calendar icon uses theme.calendarIconColor */}
               <TouchableOpacity
                 activeOpacity={0.8}
@@ -662,7 +691,8 @@ export default function EventsScreenTable({ navigation }) {
               <View
                 style={[
                   s.searchBox,
-                  {
+                  { flex: isSmallTablet ? 1 : 0.55,
+                    minWidth: isSmallTablet ? "100%" : 0,
                     backgroundColor: theme.searchBg,
                     borderColor: theme.searchBorder,
                   },
@@ -680,7 +710,15 @@ export default function EventsScreenTable({ navigation }) {
                 />
               </View>
 
-              <View style={s.rightBtns}>
+             <View
+  style={[
+    s.rightBtns,
+    {
+      width: isSmallTablet ? "100%" : "auto",
+      justifyContent: isSmallTablet ? "flex-end" : "flex-start",
+    },
+  ]}
+>
                 <TouchableOpacity
                   style={[
                     s.outlineBtn,
@@ -774,9 +812,10 @@ export default function EventsScreenTable({ navigation }) {
             <View
               style={[
                 s.tableWrapper,
-                {
+                { transform: [{ scaleX: tableScale }, { scaleY: tableScale }],
                   backgroundColor: theme.cardBg,
                   borderColor: theme.borderColor,
+                   marginHorizontal: isSmallTablet ? 10 : 24,
                 },
               ]}
             >
@@ -908,7 +947,9 @@ calendarCard: {
     justifyContent: "center",
     minWidth: 150,
     height: 88,
-    width: 215,
+    minWidth: 180,
+maxWidth: 240,
+flexShrink: 1,
     marginRight: 8,
     marginLeft: 10,
   },
@@ -937,7 +978,9 @@ calendarCard: {
     alignItems: "center",
     gap: 8,
     height: 88,
-    width: 217,
+    minWidth: 165,
+flexGrow: 1,
+flexShrink: 1,
     marginRight: 8,
   },
   statValue: { fontWeight: "700", fontSize: 15 },
@@ -986,7 +1029,14 @@ calendarCard: {
     marginHorizontal: 10,
   },
   searchInput: { flex: 1, minWidth: 0, fontSize: 12, padding: 0 },
-  rightBtns: { flexDirection: "row", gap: 8, position: "relative", left: 369 },
+  rightBtns: {   flexDirection: "row",
+  gap: 8,
+  flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    marginLeft: "auto",
+    paddingRight: 20
+  },
   outlineBtn: {
     flexDirection: "row",
     alignItems: "center",
@@ -1001,7 +1051,7 @@ calendarCard: {
   // ── TABLE ──
   tableWrapper: {
     flex: 1,
-    marginHorizontal: 30,
+  //  marginHorizontal: isSmallTablet ? 10 : 24,
     marginBottom: 10,
     borderRadius: 10,
     borderWidth: 1,
@@ -1038,26 +1088,34 @@ calendarCard: {
   hTxt: { fontWeight: "700", fontSize: 12, marginLeft: -6 },
 
   row: {
-    flexDirection: "row",
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    alignItems: "center",
+ flexDirection: "row",
+  paddingVertical: 12,
+  borderBottomWidth: 1,
+  alignItems: "center",
+  minHeight: 72,
   },
   dCell: {
-    paddingHorizontal: 8,
-    fontSize: 11,
-    lineHeight: 17,
-    fontWeight: "590",
+ paddingHorizontal: 12,
+  fontSize: 10.5,
+  lineHeight: 16,
+  fontWeight: "590",
+  flexWrap: "wrap",
+  flexShrink: 1,
+  textAlign: "left",
+  justifyContent: "flex-start",
+  alignItems: "flex-start",
+  marginLeft: 0,
   },
   subTxt: { fontSize: 10 },
   statusTxt: { fontWeight: "400", fontSize: 12 },
   drpdwnIcon: { marginLeft: 10 },
   badgeCell: { paddingHorizontal: 8, justifyContent: "center" },
   actionsCell: {
-    paddingHorizontal: 4,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
+    paddingHorizontal: 2,
+  flexDirection: "row",
+  alignItems: "center",
+  gap: 2,
+  flexWrap: "wrap",
   },
 
   // ── CHECKBOX ──
@@ -1100,7 +1158,8 @@ calendarCard: {
   // ── ACTION BUTTON ──
   actBtn: {
     borderWidth: 0,
-    paddingHorizontal: 9,
+    paddingHorizontal: 6,
+     paddingVertical: 6,
     borderRadius: 6,
     alignItems: "center",
     justifyContent: "center",
